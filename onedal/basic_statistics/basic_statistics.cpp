@@ -22,6 +22,7 @@
 #include <string>
 #include <regex>
 #include <map>
+#include <iostream>
 
 namespace py = pybind11;
 
@@ -61,8 +62,8 @@ const std::map<std::string, dal::basic_statistics::result_option_id> result_opti
 
 auto get_onedal_result_options(const py::dict& params) {
     using namespace dal::basic_statistics;
-
     auto result_option = params["result_option"].cast<std::string>();
+    std::cout << "result_option = " <<  result_option << std::endl;
     result_option_id onedal_options;
 
     try {
@@ -79,6 +80,7 @@ auto get_onedal_result_options(const py::dict& params) {
             if (match == result_option_registry.cend()) {
                 ONEDAL_PARAM_DISPATCH_THROW_INVALID_VALUE(result_option);
             } else {
+                std::cout << "added option " << match->first << std::endl;
                 onedal_options = onedal_options | match->second;
             }
         }
@@ -86,6 +88,8 @@ auto get_onedal_result_options(const py::dict& params) {
     catch (std::regex_error& e) {
         ONEDAL_PARAM_DISPATCH_THROW_INVALID_VALUE(result_option);
     }
+
+    std::cout << "onedal_result_option mask = " << onedal_options.get_mask() << std::endl;
 
     return onedal_options;
 }
