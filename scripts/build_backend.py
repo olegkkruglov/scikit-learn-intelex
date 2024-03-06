@@ -231,7 +231,7 @@ def custom_build_cmake_clib(
             memfree = int(memfree[1])  # total memory in kB
         cpu_count = min(cpu_count, floor(max(1, memfree / 2**20)))
 
-    make_args = ["cmake", "--build", abs_build_temp_path, "-j " + str(cpu_count)]
+    make_args = ["cmake", "--build", abs_build_temp_path, "-j " + str(cpu_count // 2)]
 
     make_install_args = [
         "cmake",
