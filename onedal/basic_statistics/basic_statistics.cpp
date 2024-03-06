@@ -83,7 +83,7 @@ auto get_onedal_result_options(const py::dict& params) {
                 std::cout << "added option " << match->first << std::endl;
                 std::cout << "match->second.get_mask() " << match->second.get_mask() << std::endl;
                 onedal_options = onedal_options | match->second;
-                std::cout << "onedal_options | match->second.get_mask() " << onedal_options->second.get_mask() << std::endl;
+                std::cout << "(onedal_options | match->second).get_mask() " << (onedal_options | match->second).get_mask() << std::endl;
             }
         }
     }
