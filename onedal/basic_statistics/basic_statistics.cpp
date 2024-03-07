@@ -62,6 +62,10 @@ const std::map<std::string, dal::basic_statistics::result_option_id> result_opti
 
 auto get_onedal_result_options(const py::dict& params) {
     using namespace dal::basic_statistics;
+    std::cout << "result_option_registry:" << std::endl;
+    for (auto it = result_option_registry.begin(); it != result_option_registry.end(); it++) {
+        std::cout << it->first << " " << (it->second).get_mask() << std::endl;
+    }
     auto result_option = params["result_option"].cast<std::string>();
     std::cout << "result_option = " <<  result_option << std::endl;
     result_option_id onedal_options;
