@@ -49,25 +49,8 @@ struct method2t {
     Ops ops;
 };
 
-const std::map<std::string, dal::basic_statistics::result_option_id> result_option_registry {
-    { "min", dal::basic_statistics::result_options::min },
-    { "max", dal::basic_statistics::result_options::max },
-    { "sum", dal::basic_statistics::result_options::sum },
-    { "mean", dal::basic_statistics::result_options::mean },
-    { "variance", dal::basic_statistics::result_options::variance },
-    { "variation", dal::basic_statistics::result_options::variation },
-    { "sum_squares", dal::basic_statistics::result_options::sum_squares },
-    { "standard_deviation", dal::basic_statistics::result_options::standard_deviation },
-    { "sum_squares_centered", dal::basic_statistics::result_options::sum_squares_centered },
-    { "second_order_raw_moment", dal::basic_statistics::result_options::second_order_raw_moment }   
-};
-
 auto get_onedal_result_options(const py::dict& params) {
     using namespace dal::basic_statistics;
-    std::cout << "result_option_registry:" << std::endl;
-    for (auto it = result_option_registry.begin(); it != result_option_registry.end(); it++) {
-        std::cout << it->first << " " << (it->second).get_mask() << std::endl;
-    }
     auto result_option = params["result_option"].cast<std::string>();
     std::cout << "result_option = " <<  result_option << std::endl;
     result_option_id onedal_options;
@@ -81,16 +64,41 @@ auto get_onedal_result_options(const py::dict& params) {
             re);
 
         for (std::sregex_iterator it = first; it != last; ++it) {
-            const auto str = it->str();
-            const auto match = result_option_registry.find(str);
-            if (match == result_option_registry.cend()) {
-                ONEDAL_PARAM_DISPATCH_THROW_INVALID_VALUE(result_option);
-            } else {
-                std::cout << "added option " << match->first << std::endl;
-                std::cout << "match->second.get_mask() " << match->second.get_mask() << std::endl;
-                onedal_options = onedal_options | match->second;
-                std::cout << "(onedal_options | match->second).get_mask() " << (onedal_options | match->second).get_mask() << std::endl;
+            std::smatch match = *it;
+            if (match.str() == "max") {
+                onedal_options = onedal_options | result_options::max;
             }
+            else if (match.str() == "min") {
+                onedal_options = onedal_options | result_options::min;
+            }
+            else if (match.str() == "sum") {
+                onedal_options = onedal_options | result_options::sum;
+            }
+            else if (match.str() == "mean") {
+                onedal_options = onedal_options | result_options::mean;
+            }
+            else if (match.str() == "variance") {
+                onedal_options = onedal_options | result_options::variance;
+            }
+            else if (match.str() == "variation") {
+                onedal_options = onedal_options | result_options::variation;
+            }
+            else if (match.str() == "sum_squares") {
+                onedal_options = onedal_options | result_options::sum_squares;
+            }
+            else if (match.str() == "standard_deviation") {
+                onedal_options = onedal_options | result_options::standard_deviation;
+            }
+            else if (match.str() == "sum_squares_centered") {
+                onedal_options = onedal_options | result_options::sum_squares_centered;
+            }
+            else if (match.str() == "second_order_raw_moment") {
+                onedal_options = onedal_options | result_options::second_order_raw_moment;
+            }
+            else {
+                ONEDAL_PARAM_DISPATCH_THROW_INVALID_VALUE(result_option);
+            }
+            std::cout << "onedal_options.get_mask() = " << onedal_options.get_mask() << std::endl;
         }
     }
     catch (std::regex_error& e) {
