@@ -49,16 +49,18 @@ struct method2t {
     Ops ops;
 };
 
-#define RESULT_OPTION(option) { #option, dal::basic_statistics::result_options::option }
-
 const std::map<std::string, dal::basic_statistics::result_option_id> result_option_registry {
-    RESULT_OPTION(min), RESULT_OPTION(max), RESULT_OPTION(sum), RESULT_OPTION(mean),
-    RESULT_OPTION(variance), RESULT_OPTION(variation), RESULT_OPTION(sum_squares),
-    RESULT_OPTION(standard_deviation), RESULT_OPTION(sum_squares_centered),
-    RESULT_OPTION(second_order_raw_moment)     
+    { "min", dal::basic_statistics::result_options::min },
+    { "max", dal::basic_statistics::result_options::max },
+    { "sum", dal::basic_statistics::result_options::sum },
+    { "mean", dal::basic_statistics::result_options::mean },
+    { "variance", dal::basic_statistics::result_options::variance },
+    { "variation", dal::basic_statistics::result_options::variation },
+    { "sum_squares", dal::basic_statistics::result_options::sum_squares },
+    { "standard_deviation", dal::basic_statistics::result_options::standard_deviation },
+    { "sum_squares_centered", dal::basic_statistics::result_options::sum_squares_centered },
+    { "second_order_raw_moment", dal::basic_statistics::result_options::second_order_raw_moment }   
 };
-
-#undef RESULT_OPTION
 
 auto get_onedal_result_options(const py::dict& params) {
     using namespace dal::basic_statistics;
