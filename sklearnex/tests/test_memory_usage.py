@@ -98,7 +98,6 @@ def remove_duplicated_estimators(estimators_list):
 
 
 BANNED_ESTIMATORS = (
-    "IncrementalLinearRegression",  # TODO fix memory leak issue
     "TSNE",  # too slow for using in testing on common data size
 )
 estimators = [
