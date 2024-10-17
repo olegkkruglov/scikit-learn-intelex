@@ -15,6 +15,8 @@
 # ===============================================================================
 from abc import ABCMeta
 
+import time
+
 import numpy as np
 
 from daal4py.sklearn._utils import daal_check_version, get_dtype
@@ -93,12 +95,37 @@ class EmpiricalCovariance(BaseEmpiricalCovariance):
         self : object
             Returns the instance itself.
         """
+        start_time = time.time()
         policy = self._get_policy(queue, X)
+        end_time = time.time()
+        print("policy time =", end_time - start_time)
+        start_time = end_time
         X = _check_array(X, dtype=[np.float64, np.float32])
+
+        end_time = time.time()
+        print("check_array time =", end_time - start_time)
+        start_time = end_time
+        
         X = _convert_to_supported(policy, X)
+
+        end_time = time.time()
+        print("concert to supported time =", end_time - start_time)
+        start_time = end_time
+
         dtype = get_dtype(X)
         params = self._get_onedal_params(dtype)
         hparams = get_hyperparameters("covariance", "compute")
+
+        end_time = time.time()
+        print("params time =", end_time - start_time)
+        start_time = end_time
+
+        table_X = to_table(X)
+
+        end_time = time.time()
+        print("to_table time =", end_time - start_time)
+        start_time = end_time
+
         if hparams is not None and not hparams.is_default:
             result = self._get_backend(
                 "covariance",
@@ -107,7 +134,7 @@ class EmpiricalCovariance(BaseEmpiricalCovariance):
                 policy,
                 params,
                 hparams.backend,
-                to_table(X),
+                table_X
             )
         else:
             result = self._get_backend(
