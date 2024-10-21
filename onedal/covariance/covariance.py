@@ -147,6 +147,14 @@ class EmpiricalCovariance(BaseEmpiricalCovariance):
                 from_table(result.cov_matrix) * (X.shape[0] - 1) / X.shape[0]
             )
 
+        end_time = time.time()
+        print("call backend time =", end_time - start_time)
+        start_time = end_time
+
         self.location_ = from_table(result.means).ravel()
+
+        end_time = time.time()
+        print("from table time =", end_time - start_time)
+        start_time = end_time
 
         return self
