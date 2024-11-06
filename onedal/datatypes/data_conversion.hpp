@@ -13,7 +13,6 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *******************************************************************************/
-
 #pragma once
 
 #define PY_ARRAY_UNIQUE_SYMBOL ONEDAL_PY_ARRAY_API
